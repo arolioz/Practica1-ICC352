@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
+import org.eclipse.jetty.http.HttpTester;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -59,6 +60,49 @@ public class main {
 
             System.out.println("2- Cantidad de parrafos del recurso retornado: " + parrafos.size());
 
+            Elements imgEnParrafos = doc.select("p img");
+
+            System.out.println("3- Cantidad de imagenes dentro de los parrafos del recurso retornado: " + imgEnParrafos.size());
+
+            Elements formsPost = doc.select("form[method=post]");
+            Elements formsGet = doc.select("form[method=get]");
+
+            System.out.println("4- Cantidad de forms con el metodo post: " + formsPost.size());
+            System.out.println("4- Cantidad de forms con el metodo get: " + formsGet.size());
+
+            Elements forms = doc.select("form");
+
+            System.out.println("5- Inputs de cada formulario");
+
+            int n = 1;
+            for (Element formulario : forms){
+
+                System.out.println("Formulario["+n+"]");
+
+                Elements inputs = formulario.select("input");
+
+                if (inputs.isEmpty()){
+                    System.out.println("No hay inputs en este formulario");
+                    System.out.println("----------------------");
+                }
+                else {
+                    System.out.println("Inputs:");
+
+                    int k = 1;
+                    for (Element input : inputs) {
+                        String tipo = input.attr("type");
+
+                        if (tipo.isEmpty()) {
+                            tipo = "text";
+                        }
+
+                        System.out.println(k + "-" + input.attr("name") + "[Tipo: " + tipo + "]");
+                        k++;
+                    }
+                    System.out.println("----------------------");
+                }
+                n++;
+            }
 
         } catch (Throwable t){
             System.out.println("Ha ocurrido un error utilizando la url " + url);
