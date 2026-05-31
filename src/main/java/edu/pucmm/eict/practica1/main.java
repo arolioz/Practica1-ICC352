@@ -20,16 +20,36 @@ public class main {
 
         String url = scanner.nextLine();
 
-        System.out.println("La url es " + url);
-
         scanner.close();
 
-        HttpRequest request = HttpRequest.newBuilder().uri(new URI("https://postman-echo.com/get")).GET().build();
 
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        HttpHeaders responseHeaders = response.headers();
 
-        System.out.println(responseHeaders);
+        try{
+            HttpRequest request = HttpRequest.newBuilder().uri(new URI(url)).GET().build();
+
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            HttpHeaders responseHeaders = response.headers();
+
+            String tipoRecurso = responseHeaders.firstValue("Content-type").orElse("Error");
+
+            System.out.println("[El tipo de recurso es " + tipoRecurso + "]");
+
+            if (!tipoRecurso.contains("text/html")){
+                System.out.println("El recurso no es HTML, abortando el programa...");
+                return;
+            }
+
+            String html = response.body();
+
+            System.out.println("1- Cantidad de lineas del recurso retornado: " + html);
+
+
+        } catch (Throwable t){
+            System.out.println("Ha ocurrido un error utilizando la url " + url);
+        }
+
+
+
 
         //HttpRequest.newBuilder(request, (name, value) -> !name.equalsIgnoreCase("Foo-Bar"));
 
