@@ -9,11 +9,14 @@ import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 
 public class main {
@@ -51,6 +54,10 @@ public class main {
             String contenidoHtml = doc.toString();
 
             System.out.println("1- Cantidad de lineas del recurso retornado: " + contenidoHtml.split("\n").length);
+
+            Elements parrafos = doc.select("p");
+
+            System.out.println("2- Cantidad de parrafos del recurso retornado: " + parrafos.size());
 
 
         } catch (Throwable t){
