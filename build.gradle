@@ -10,6 +10,10 @@ application {
     mainClass = 'edu.pucmm.eict.practica1.main'
 }
 
+tasks.named('run') {
+    standardInput = System.in
+}
+
 repositories {
     mavenCentral()
 }
