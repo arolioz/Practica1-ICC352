@@ -104,6 +104,28 @@ public class main {
                 n++;
             }
 
+            System.out.println("6- Peticiones al servidor a partir de los forms con el metodo post: ");
+
+            n = 1;
+            for (Element form : forms){
+                if (form.attr("method").equals("post")){
+                    String action = form.attr("action");
+
+                    if (!action.isEmpty()){
+
+                        HttpRequest peticion = HttpRequest.newBuilder()
+                                .uri(new URI(action))
+                                .header("matricula-id", "10154428").GET().build();
+
+                        System.out.println("Enviando peticion al action: " + action);
+
+
+
+                    }
+
+                }
+            }
+
         } catch (Throwable t){
             System.out.println("Ha ocurrido un error utilizando la url " + url);
         }
