@@ -1,5 +1,6 @@
 package edu.pucmm.eict.practica1;
 
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -10,6 +11,10 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.Scanner;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 
 public class main {
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
@@ -39,9 +44,13 @@ public class main {
                 return;
             }
 
-            String html = response.body();
+            String body = response.body();
 
-            System.out.println("1- Cantidad de lineas del recurso retornado: " + html);
+            Document doc =  Jsoup.parse(body, "UTF-8");
+
+            String contenidoHtml = doc.toString();
+
+            System.out.println("1- Cantidad de lineas del recurso retornado: " + contenidoHtml.split("\n").length);
 
 
         } catch (Throwable t){
