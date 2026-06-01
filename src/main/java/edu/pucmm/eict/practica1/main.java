@@ -31,6 +31,7 @@ public class main {
 
         scanner.close();
 
+        HttpClient cliente = HttpClient.newHttpClient();
 
 
         try{
@@ -50,7 +51,7 @@ public class main {
 
             String body = response.body();
 
-            Document doc =  Jsoup.parse(body, "UTF-8");
+            Document doc =  Jsoup.parse(body, url);
 
             String contenidoHtml = doc.toString();
 
@@ -108,26 +109,37 @@ public class main {
 
             n = 1;
             for (Element form : forms){
-                if (form.attr("method").equals("post")){
+
+                if (form.attr("method").equalsIgnoreCase("post")){
+
                     String action = form.attr("action");
 
+                    System.out.println("Formulario" + "[" + n + "]");
                     if (!action.isEmpty()){
+                        try{
+                            HttpRequest peticion = HttpRequest.newBuilder()
+                                    .uri(new URI(action))
+                                    .header("matricula-id", "10154428").POST(HttpRequest.BodyPublishers.ofString("asignatura=practica1")).build();
+                            HttpResponse<String> respuesta = cliente.send(peticion, HttpResponse.BodyHandlers.ofString());
 
-                        HttpRequest peticion = HttpRequest.newBuilder()
-                                .uri(new URI(action))
-                                .header("matricula-id", "10154428").GET().build();
-
-                        System.out.println("Enviando peticion al action: " + action);
-
-
-
+                            System.out.println("Enviando peticion al action: " + action);
+                            System.out.println("Respuesta del servidor: " + respuesta.body());
+                        }catch (Throwable error){
+                            System.out.println("Hubo un error resolviendo el action: " + action);
+                        }
                     }
-
+                    else{
+                        System.out.println("No se encontro el action del formulario");
+                    }
+                    n++;
                 }
+
+
             }
 
         } catch (Throwable t){
             System.out.println("Ha ocurrido un error utilizando la url " + url);
+            System.out.println(t);
         }
 
 
