@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Scanner;
 
-import org.eclipse.jetty.http.HttpTester;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
